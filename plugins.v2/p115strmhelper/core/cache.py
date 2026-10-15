@@ -194,18 +194,16 @@ class R302Cache:
             region=self.region,
         )
 
-    async def get(self, pick_code, ua_code) -> Optional[str]:
+    async def get(self, pick_code: str, ua_code: str) -> Optional[str]:
         """
-        从缓存中获取一个URL，如果它存在且未过期
+        跳过302直链缓存，由调用方重新获取下载地址
 
         :param pick_code: 第一层键
         :param ua_code: 第二层键
 
-        :return: 如果URL存在且未过期，则返回该URL；否则返回None
+        :return: 固定返回None，不复用已缓存的直链
         """
-        return await self._cache.get(
-            key=self._make_key(pick_code, ua_code), region=self.region
-        )
+        return None
 
     async def count_by_pick_code(self, pick_code) -> int:
         """
